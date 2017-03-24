@@ -6,9 +6,7 @@
 #   upgrades PMM client and PT to the latest version
 #   does some tests
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   - name: include tasks for test env setup

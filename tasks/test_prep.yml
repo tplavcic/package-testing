@@ -16,6 +16,12 @@
     - curl
     when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "5"
 
+  - name: install certificates on centos
+    yum: name={{item}} state=latest
+    with_items:
+    - ca-certificates
+    when: ansible_os_family == "RedHat"
+
   - name: setup epel 5 repo
     command: "{{ item }}"
     with_items:
@@ -37,6 +43,7 @@
     - git
     - curl
     - pv
+    - ca-certificates
     when: ansible_os_family == "Debian"
 
   - name: install needed packages for running tests with yum
@@ -46,6 +53,7 @@
     - curl
     - pv
     - libselinux-python
+    - which
     when: ansible_os_family == "RedHat"
 
   - name: clone package-testing repository for test scripts

@@ -1,9 +1,7 @@
 ---
 # This playbook sets up the percona testing repo and upgrades all the packages
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   - name: include tasks for enabling testing repo

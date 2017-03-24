@@ -1,9 +1,7 @@
 ---
 # This playbook sets up the PXC node from testing repo
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   # find vm ip so that it can be used in templates

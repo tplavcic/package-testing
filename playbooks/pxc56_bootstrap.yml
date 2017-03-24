@@ -1,9 +1,7 @@
 ---
 # This playbook sets up the first PXC node from Percona main repo
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   # find vm ip so that it can be used in templates

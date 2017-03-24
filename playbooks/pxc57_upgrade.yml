@@ -1,9 +1,7 @@
 ---
 # This playbook upgrades the PXC node to the latest available version in testing repo
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   - name: include tasks for enabling testing repo

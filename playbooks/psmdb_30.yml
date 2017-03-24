@@ -4,9 +4,7 @@
 #   installs PSMDB 3.0
 #   does some tests
 
-- hosts: all
-  become: true
-  become_method: sudo
+- hosts: pkg-test
 
   tasks:
   - name: include tasks for test env setup
