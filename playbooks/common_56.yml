@@ -98,32 +98,32 @@
   - name: re-run ps_tokudb_admin to finish tokudb install
     command: /usr/bin/ps_tokudb_admin --enable --enable-backup
 
-  - name: install plugins, import world database, test tokudb
-    command: /package-testing/plugins_test_56.sh ps
-
-  - name: check that Percona Server version is correct
-    command: /package-testing/version_check.sh ps56
-
-  - name: check that Percona Server package versions are correct
-    command: /package-testing/package_check.sh ps56
-
-  - name: check that Percona Toolkit version is correct
-    command: /package-testing/version_check.sh pt
-
-  - name: check that Percona XtraBackup version is correct
-    command: /package-testing/version_check.sh pxb23
-
-  - name: check that Percona XtraBackup package versions are correct
-    command: /package-testing/package_check.sh pxb23
-
-  - name: install 3rd party packages with apt
-    apt: name={{item}}
-    with_items:
-    - rsyslog-mysql
-    when: ansible_os_family == "Debian"
-
-  - name: install 3rd party packages with yum
-    yum: name={{item}}
-    with_items:
-    - rsyslog-mysql
-    when: ansible_os_family == "RedHat"
+#  - name: install plugins, import world database, test tokudb
+#    command: /package-testing/plugins_test_56.sh ps
+#
+#  - name: check that Percona Server version is correct
+#    command: /package-testing/version_check.sh ps56
+#
+#  - name: check that Percona Server package versions are correct
+#    command: /package-testing/package_check.sh ps56
+#
+#  - name: check that Percona Toolkit version is correct
+#    command: /package-testing/version_check.sh pt
+#
+#  - name: check that Percona XtraBackup version is correct
+#    command: /package-testing/version_check.sh pxb23
+#
+#  - name: check that Percona XtraBackup package versions are correct
+#    command: /package-testing/package_check.sh pxb23
+#
+#  - name: install 3rd party packages with apt
+#    apt: name={{item}}
+#    with_items:
+#    - rsyslog-mysql
+#    when: ansible_os_family == "Debian"
+#
+#  - name: install 3rd party packages with yum
+#    yum: name={{item}}
+#    with_items:
+#    - rsyslog-mysql
+#    when: ansible_os_family == "RedHat"
