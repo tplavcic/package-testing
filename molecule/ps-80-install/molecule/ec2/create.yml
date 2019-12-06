@@ -24,7 +24,7 @@
         from_port: 0
         to_port: 0
         cidr_ip: '0.0.0.0/0'
-    keypair_name: "{{ lookup('env', 'MOLECULE_KEY_NAME') }}"
+    keypair_name: "molecule-pkg-tests"
     keypair_path: "{{ lookup('env', 'MOLECULE_EPHEMERAL_DIRECTORY') }}/ssh_key"
 
   tasks:
@@ -51,34 +51,19 @@
         region: "{{ item.region|default(default_region) }}"
       with_items: "{{ molecule_yml.platforms }}"
 
-    - name: Test for presence of local keypair
-      stat:
-        path: "{{ keypair_path }}-{{ item.region|default(default_region) }}"
-      with_items: "{{ molecule_yml.platforms }}"
-      register: keypair_local
-
-    - name: Delete remote keypair
-      ec2_key:
-        name: "{{ keypair_name }}"
-        state: absent
-        region: "{{ item.item.region|default(default_region) }}"
-      with_items: "{{ keypair_local.results}}"
-      when: not item.stat.exists
-
-    - name: Create keypair
-      ec2_key:
-        name: "{{ keypair_name }}"
-        region: "{{ item.region|default(default_region) }}"
-      with_items: "{{ molecule_yml.platforms }}"
-      register: keypair
+#    - name: Update remote keypair
+#      ec2_key:
+#        name: "{{ keypair_name }}"
+#        region: "{{ item.region|default(default_region) }}"
+#        key_material: "{{ lookup('env', 'MOLECULE_AWS_PUBLIC_KEY') }}"
+#      register: keypair
 
     - name: Persist the keypair
       copy:
-        dest: "{{ keypair_path }}-{{ item.invocation.module_args.region }}"
-        content: "{{ item.key.private_key }}"
+        dest: "{{ keypair_path }}-{{ item.region|default(default_region) }}"
+        src: "{{ lookup('env', 'MOLECULE_AWS_PRIVATE_KEY') }}"
         mode: 0600
-      with_items: "{{ keypair.results }}"
-      when: item.key.private_key is defined
+      with_items: "{{ molecule_yml.platforms }}"
 
     - name: Get the ec2 ami(s) by owner and name, if image not set
       ec2_ami_facts:

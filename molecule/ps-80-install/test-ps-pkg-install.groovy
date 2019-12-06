@@ -72,7 +72,7 @@ pipeline {
     }
     stage ('Create virtual machines') {
       steps {
-        withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AMI/OVF', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'MOLECULE_AWS_PRIVATE_KEY', keyFileVariable: 'MOLECULE_AWS_PRIVATE_KEY', passphraseVariable: '', usernameVariable: ''), [$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AMI/OVF', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
           sh '''
               echo $USER
               echo $REGION
@@ -92,7 +92,7 @@ pipeline {
         sh '''
             cd molecule/${ROLE_NAME}
             python3 -m molecule list
-            python3 -m molecule converge -s ec2
+            #python3 -m molecule converge -s ec2
         '''
       }
     }
@@ -103,7 +103,14 @@ pipeline {
             python3 -m molecule list
             python3 -m molecule verify -s ec2
         '''
-        junit 'molecule/${ROLE_NAME}/molecule/ec2/*.xml'
+        sh '''
+            echo "### Listing short ###"
+            ls -alh molecule/${ROLE_NAME}/molecule/ec2
+            echo "### Listing long ###"
+            ls -alh ${WORKSPACE}/molecule/${ROLE_NAME}/molecule/ec2
+            cat ${WORKSPACE}/molecule/${ROLE_NAME}/molecule/ec2/report.xml
+        '''
+        junit "${WORKSPACE}/molecule/${ROLE_NAME}/molecule/ec2/report.xml"
       }
     }
     stage ('Start packages deletion') {

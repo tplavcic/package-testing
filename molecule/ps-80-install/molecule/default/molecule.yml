@@ -1,6 +1,10 @@
 ---
 scenario:
   name: default
+  destroy_sequence:
+    - destroy
+  cleanup_sequence:
+    - cleanup
   test_sequence:
     - lint
     - destroy

@@ -32,8 +32,6 @@ platforms:
       iit-billing-tag: jenkins-ps-pkg-worker
 provisioner:
   name: ansible
-  env:
-    MOLECULE_KEY_NAME: molecule-${ROLE_NAME}
   playbooks:
     create: create.yml
     cleanup: ../default/cleanup.yml
